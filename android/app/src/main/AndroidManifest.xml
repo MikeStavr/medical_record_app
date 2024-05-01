@@ -22,6 +22,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <!-- Required to fetch data from the internet. -->
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

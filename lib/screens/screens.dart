@@ -6,3 +6,5 @@ export 'demographics/demographics_page.dart';
 export 'medication/medication_page.dart';
 export 'homepage.dart';
 export 'splash_page.dart';
+export 'auth/login_page.dart';
+export 'auth/register_page.dart';

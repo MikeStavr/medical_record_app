@@ -1,10 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:medical_record/utils/data/app_info.dart';
 import 'package:medical_record/widgets/custom_appbar.dart';
 import 'package:medical_record/widgets/custom_menu.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  late Future<String> futureAdvice;
+
+  Future<String> getAdvice() {
+    return http.get(Uri.parse('https://api.adviceslip.com/advice')).then(
+      (response) {
+        if (response.statusCode == 200) {
+          return jsonDecode(response.body)['slip']['advice'];
+        } else {
+          throw Exception('Failed to load advice');
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    futureAdvice = getAdvice();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +67,47 @@ class Homepage extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                FutureBuilder(
+                  future: futureAdvice,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(left: 10, right: 10),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 77, 216, 235),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            snapshot.data!,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Expanded(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 77, 216, 235),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
             // Grid for different sections of the app.
             Expanded(
               child: GridView.builder(
