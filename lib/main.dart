@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_record/screens/plan_of_care/plan_of_care_page.dart';
 import './screens/screens.dart';
 
 void main() {
@@ -24,12 +25,13 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/splash': (context) => const SplashScreen(),
-        '/allergies': (context) => AllergiesPage(),
-        '/immunizations': (context) => ImmunizationsPage(),
-        '/medication': (context) => MedicationPage(),
+        '/allergies': (context) => const AllergiesPage(),
+        '/immunizations': (context) => const ImmunizationsPage(),
+        '/medication': (context) => const MedicationPage(),
         '/problem_list': (context) => const ProblemListPage(),
         '/procedures': (context) => const ProceduresPage(),
         '/demographics': (context) => const DemographicsPage(),
+        '/plan_of_care': (context) => const PlanOfCarePage(),
       },
     );
   }

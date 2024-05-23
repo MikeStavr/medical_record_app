@@ -57,6 +57,7 @@ class LoginPage extends StatelessWidget {
                   CustomTextField(
                     controller: passwordController,
                     label: "Password",
+                    isPassword: true,
                   ),
                   ElevatedButton(
                     onPressed: () {

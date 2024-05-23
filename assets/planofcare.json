@@ -1,0 +1,19 @@
+{
+  "planOfCare": [
+    {
+      "activityName": "Office Consultation",
+      "date": "May 28, 2007",
+      "instructions": "Consultation with Dr. George Potomac for Asthma"
+    },
+    {
+      "activityName": "Chest X-Ray",
+      "date": "June 1, 2007",
+      "instructions": ""
+    },
+    {
+      "activityName": "Sputum Culture",
+      "date": "May 28, 2007",
+      "instructions": ""
+    }
+  ]
+}

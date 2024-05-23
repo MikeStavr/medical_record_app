@@ -163,6 +163,8 @@ class _HomepageState extends State<Homepage> {
                           case 'Demographics':
                             Navigator.pushNamed(context, '/demographics');
                             break;
+                          case 'Plan of Care':
+                            Navigator.pushNamed(context, '/plan_of_care');
                         }
                       },
                     ),

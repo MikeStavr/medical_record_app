@@ -80,6 +80,13 @@ class CustomMenu extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/demographics');
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.medical_services_sharp),
+            title: const Text('Plan of Care'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/plan_of_care');
+            },
+          ),
         ],
       ),
     );
