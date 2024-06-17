@@ -46,6 +46,7 @@ class _PlanOfCarePageState extends State<PlanOfCarePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.blue[100],
           title: const Text("Plan of Care"),

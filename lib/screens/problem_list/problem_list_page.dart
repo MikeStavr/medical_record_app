@@ -67,6 +67,7 @@ class _ProblemListPageState extends State<ProblemListPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.blue[100],
           title: const Text("Problem List"),
@@ -161,6 +162,31 @@ class _ProblemListPageState extends State<ProblemListPage> {
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
+                                if (_problemController.text.isEmpty ||
+                                    _dateController.text.isEmpty ||
+                                    _statusController.text.isEmpty ||
+                                    _notesController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text("Please fill in all fields")
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                  return;
+                                }
+
                                 problems["problemList"].add({
                                   "name": _problemController.text,
                                   "date": _dateController.text,

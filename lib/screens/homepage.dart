@@ -82,10 +82,12 @@ class _HomepageState extends State<Homepage> {
                             color: const Color.fromARGB(255, 77, 216, 235),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(
-                            snapshot.data!,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
+                          child: Center(
+                            child: Text(
+                              snapshot.data!,
+                              style: const TextStyle(
+                                  fontSize: 20, color: Colors.white),
+                            ),
                           ),
                         ),
                       );

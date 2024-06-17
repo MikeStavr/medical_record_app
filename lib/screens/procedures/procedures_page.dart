@@ -22,6 +22,8 @@ class _ProceduresPageState extends State<ProceduresPage> {
   @override
   void initState() {
     super.initState();
+
+    // Load the JSON File before the widget is built.
     DefaultAssetBundle.of(context)
         .loadString("assets/procedures.json")
         .then((value) {
@@ -37,6 +39,7 @@ class _ProceduresPageState extends State<ProceduresPage> {
     super.dispose();
   }
 
+  // Once the calendar is clicked, pop up a dialog to select the date.
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -70,6 +73,7 @@ class _ProceduresPageState extends State<ProceduresPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.blue[100],
           title: const Text("Procedures"),
@@ -79,7 +83,7 @@ class _ProceduresPageState extends State<ProceduresPage> {
             tabs: [
               Tab(icon: Icon(Icons.medical_information), text: "Procedures"),
               Tab(
-                icon: Icon(Icons.person_pin_circle_outlined),
+                icon: Icon(Icons.create),
                 text: "Insert",
               ),
               Tab(icon: Icon(Icons.insert_chart), text: "Chart"),
@@ -156,6 +160,28 @@ class _ProceduresPageState extends State<ProceduresPage> {
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
+                                if (_procedureController.text.isEmpty ||
+                                    _dateController.text.isEmpty ||
+                                    _providerController.text.isEmpty ||
+                                    _locationController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.error,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text("Please fill out all fields.")
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                  return;
+                                }
                                 procedures!.add({
                                   "name": _procedureController.text,
                                   "date": _dateController.text,

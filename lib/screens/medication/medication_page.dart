@@ -62,7 +62,7 @@ class _MedicationPageState extends State<MedicationPage> {
     final dateFormat = DateFormat('MMMM d, yyyy');
 
     return medication!.map((med) {
-      final date = dateFormat.parse(med["date"]);
+      final date = dateFormat.parse(med["date"] ?? "");
       return _MedicationData(date, med["name"]);
     }).toList();
   }
@@ -72,6 +72,7 @@ class _MedicationPageState extends State<MedicationPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.blue[100],
           title: const Text("Medication"),
@@ -81,7 +82,7 @@ class _MedicationPageState extends State<MedicationPage> {
             tabs: [
               Tab(icon: Icon(Icons.medical_information), text: "Medication"),
               Tab(
-                icon: Icon(Icons.person_pin_circle_outlined),
+                icon: Icon(Icons.create),
                 text: "Insert",
               ),
               Tab(icon: Icon(Icons.insert_chart), text: "Chart"),
@@ -110,82 +111,103 @@ class _MedicationPageState extends State<MedicationPage> {
                     itemCount: medication!.length,
                   ),
                   // Insert tab content goes here
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextField(
-                            controller: _medicationController,
-                            decoration: const InputDecoration(
-                              labelText: "Medication Name",
-                              icon: Icon(Icons.create),
-                            ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: _medicationController,
+                          decoration: const InputDecoration(
+                            labelText: "Medication Name",
+                            icon: Icon(Icons.create),
                           ),
-                          TextField(
-                            controller: _dateController,
-                            decoration: const InputDecoration(
-                              labelText: "Date",
-                              icon: Icon(Icons.calendar_today),
-                            ),
-                            readOnly: true,
-                            onTap: () => _selectDate(context),
+                        ),
+                        TextField(
+                          controller: _dateController,
+                          decoration: const InputDecoration(
+                            labelText: "Date",
+                            icon: Icon(Icons.calendar_today),
                           ),
-                          TextField(
-                            controller: _typeController,
-                            decoration: const InputDecoration(
-                              labelText: "Type",
-                              icon: Icon(Icons.info),
-                            ),
+                          readOnly: true,
+                          onTap: () => _selectDate(context),
+                        ),
+                        TextField(
+                          controller: _typeController,
+                          decoration: const InputDecoration(
+                            labelText: "Type",
+                            icon: Icon(Icons.info),
                           ),
-                          TextField(
-                            controller: _doseController,
-                            decoration: const InputDecoration(
-                              labelText: "Dose",
-                              icon: Icon(Icons.info),
-                            ),
+                        ),
+                        TextField(
+                          controller: _doseController,
+                          decoration: const InputDecoration(
+                            labelText: "Dose",
+                            icon: Icon(Icons.info),
                           ),
-                          TextField(
-                            controller: _instructionsController,
-                            decoration: const InputDecoration(
-                              labelText: "Instructions",
-                              icon: Icon(Icons.note),
-                            ),
+                        ),
+                        TextField(
+                          controller: _instructionsController,
+                          decoration: const InputDecoration(
+                            labelText: "Instructions",
+                            icon: Icon(Icons.note),
                           ),
-                          TextField(
-                            controller: _prescriberController,
-                            decoration: const InputDecoration(
-                              labelText: "Prescriber",
-                              icon: Icon(Icons.person),
-                            ),
+                        ),
+                        TextField(
+                          controller: _prescriberController,
+                          decoration: const InputDecoration(
+                            labelText: "Prescriber",
+                            icon: Icon(Icons.person),
                           ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                medication!.add({
-                                  "name": _medicationController.text,
-                                  "date": _dateController.text,
-                                  "type": _typeController.text,
-                                  "dose": _doseController.text,
-                                  "instructions": _instructionsController.text,
-                                  "prescriber": _prescriberController.text,
-                                });
-                                _medicationController.clear();
-                                _dateController.clear();
-                                _typeController.clear();
-                                _doseController.clear();
-                                _instructionsController.clear();
-                                _prescriberController.clear();
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_medicationController.text.isEmpty ||
+                                  _dateController.text.isEmpty ||
+                                  _typeController.text.isEmpty ||
+                                  _doseController.text.isEmpty ||
+                                  _instructionsController.text.isEmpty ||
+                                  _prescriberController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.error,
+                                          color: Colors.red,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text("Please fill in all fields"),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              medication!.add({
+                                "name": _medicationController.text,
+                                "date": _dateController.text,
+                                "type": _typeController.text,
+                                "dose": _doseController.text,
+                                "instructions": _instructionsController.text,
+                                "prescriber": _prescriberController.text,
                               });
-                            },
-                            child: const Text("Save"),
-                          ),
-                        ],
-                      ),
+                              _medicationController.clear();
+                              _dateController.clear();
+                              _typeController.clear();
+                              _doseController.clear();
+                              _instructionsController.clear();
+                              _prescriberController.clear();
+                            });
+                          },
+                          child: const Text("Save"),
+                        ),
+                      ],
                     ),
                   ),
                   // Graph tab content
